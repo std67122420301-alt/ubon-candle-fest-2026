@@ -24,7 +24,7 @@
           <tr>
             <th scope="row">{{loop.index}}</th>
             <td>
-              <img class="img-thumbnail" width="100" src="{{url_for('static', filename='images/'+candle.name)}}" alt="">
+              <img src="{{ url_for('static', filename='images/' + candle.name) }}" alt="Candle Image" width="200">
               </td>
             <td>
               {{candle.temple.name}}

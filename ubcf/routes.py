@@ -11,8 +11,12 @@ def save_image(img):
     random_hex = secrets.token_hex(8)
     fn, fext = os.path.splitext(img.filename)
     img_fn = random_hex + fext
-    img_path = os.path.join(app.root_path, 'static/images', img_fn)
+    
+    upload_dir = os.path.join(app.root_path, 'static', 'images')
+    
+    os.makedirs(upload_dir, exist_ok=True)
 
+    img_path = os.path.join(upload_dir, img_fn)
     img.save(img_path)
 
     return img_fn
@@ -172,5 +176,7 @@ def get_user_by_id(id):
         candles.append(tmp_candle)
 
     user['candles'] = candles
+
+
 
     return jsonify(user)
