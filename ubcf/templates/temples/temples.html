@@ -1,37 +1,45 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-  {{title}}
+  {{ title }}
 {% endblock %}
 
 {% block content %}
-  <div class="container">
-    <h1>{{title}}</h1>
-    <a href="{{url_for('new_temple')}}" class="btn btn-outline-primary">New Temple</a>
-    <br>
-    <br>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Temple Name</th>
-          <th scope="col">Description</th>
-          
-        </tr>
-      </thead>
-      <tbody>
-        {% for temple in temples %}
-          <tr>
-            <th scope="row">{{loop.index}}</th>
-            <td>{{temple.name}}</td>
-            <td>{{temple.description}}</td>
-            
-          </tr>
-        {% endfor %}
-        
-        
-        
-      </tbody>
-    </table>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Temples List</h2>
+    <a href="{{ url_for('new_temple') }}" class="btn btn-outline-primary">+ New Temple</a>
   </div>
+
+  <table class="table table-bordered table-striped align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th style="width: 10%;">ID</th>
+        <th style="width: 30%;">Temple Name</th>
+        <th>Description</th>
+        <th style="width: 15%;" class="text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for temple in temples %}
+      <tr>
+        <td>{{ temple.id }}</td>
+        <td>{{ temple.name }}</td>
+        <td>{{ temple.description or '-' }}</td>
+        <td class="text-center">
+          <form action="{{ url_for('delete_temple', id=temple.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this temple?');">
+            <button type="submit" class="btn btn-danger btn-sm">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4" class="text-center text-muted">No temples found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

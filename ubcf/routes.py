@@ -182,3 +182,37 @@ def get_user_by_id(id):
 
 
     return jsonify(user)
+
+@app.route('/temples/delete/<int:id>', methods=['POST'])
+@login_required
+def delete_temple(id):
+    temple = db.session.get(Temple, id)
+    if temple:
+        # ลบไฟล์รูปภาพของต้นเทียนที่ผูกกับวัดนี้ก่อน
+        for candle in temple.candles:
+            img_path = os.path.join(app.root_path, 'static', 'images', candle.name)
+            if os.path.exists(img_path):
+                os.remove(img_path)
+            db.session.delete(candle)
+
+        db.session.delete(temple)
+        db.session.commit()
+        flash('Temple deleted successfully!', 'success')
+    return redirect(url_for('temples'))
+
+
+@app.route('/candles/delete/<int:id>', methods=['POST'])
+@login_required
+def delete_candle(id):
+    candle = db.session.get(Candle, id)
+    if candle:
+        # ลบไฟล์รูปภาพออกจากโฟลเดอร์ static/images
+        img_path = os.path.join(app.root_path, 'static', 'images', candle.name)
+        if os.path.exists(img_path):
+            os.remove(img_path)
+
+        db.session.delete(candle)
+        db.session.commit()
+        flash('Candle deleted successfully!', 'success')
+    return redirect(url_for('candles'))
+
