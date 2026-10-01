@@ -13,11 +13,13 @@ def save_image(img):
     img_fn = random_hex + fext
     
     upload_dir = os.path.join(app.root_path, 'static', 'images')
-    
     os.makedirs(upload_dir, exist_ok=True)
 
     img_path = os.path.join(upload_dir, img_fn)
-    img.save(img_path)
+
+    i = Image.open(img)
+    i.thumbnail((800, 800))
+    i.save(img_path)
 
     return img_fn
 
