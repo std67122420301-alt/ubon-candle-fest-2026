@@ -23,7 +23,7 @@
     <tbody>
       {% for temple in temples %}
       <tr>
-        <td>{{ temple.id }}</td>
+       <td>{{ loop.index }}</td>
         <td>{{ temple.name }}</td>
         <td>{{ temple.description or '-' }}</td>
         <td class="text-center">
